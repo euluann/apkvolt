@@ -20,10 +20,14 @@ SUPPORTED_LIBS = [
 	"python-dateutil", "pytz", "loguru", "native-libs"
 ]
 
+# Confirma a existencia do python 3.11 utilizavel
+python311_confirm = False
+
 # Verifica se a versao do python do runtime eh 3.11
 if sys.version_info[:2] == (3, 11):
 	# Se for, nao sera necessario o uso de python externo
 	PYTHON311_PATH = None
+	python311_confirm = True
 else:
 	# Lista de possiveis chamadas do python3.11
 	python_calls = ["python3.11", "python311", "python", "python3"]
@@ -46,18 +50,9 @@ else:
 			if result.stdout.strip() == "3.11":
 				# Define o caminho do python3.11 como o encontrado
 				PYTHON311_PATH = shutil.which(pycall)
+				python311_confirm = True
 				# Quebra o loop de chamadas
 				break
-	# Se nao encontrar um python3.11
-	if PYTHON311_PATH is None:
-		# Emite um erro com instrucoes
-		logger.error("No valid Python 3.11 runtime found")
-		raise APKForgeError(
-			"APKVolt requires a Python 3.11 runtime.\n"
-			"It can be either:\n"
-			"- the current interpreter (sys.version == 3.11), or\n"
-			"- an external python3.11 available in PATH.\n"
-		)
 
 # Empacota o cache em private.tar
 def cache_to_tar(path):
@@ -310,6 +305,17 @@ def build(
 					# Define o nome do arquivo python compilado (sendo o mesmo nome porem com 'c' no final, resultando em '.pyc' na extensao)
 					out = path_cache_subdir_file+'c'
 					
+					# Se nao encontrar um python3.11
+					if not python311_confirm:
+						# Emite um erro com instrucoes
+						logger.error("No valid Python 3.11 runtime found")
+						raise APKVoltError(
+							"APKVolt requires a Python 3.11 runtime.\n"
+							"It can be either:\n"
+							"- the current interpreter (sys.version == 3.11), or\n"
+							"- an external python3.11 available in PATH.\n"
+						)
+		
 					# Se o um python externo nao foi especificado significa que a versao do python do runtime ja eh 3.11
 					if PYTHON311_PATH is None:
 						# Compila no python do proprio runtime
