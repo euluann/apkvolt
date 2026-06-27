@@ -1,3 +1,0 @@
-requests>=2.30
-pyaxml>=0.0.35
-Pillow

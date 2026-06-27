@@ -1,4 +1,0 @@
-recursive-include apkvolt *
-include CREDITS.md
-include LICENSE
-include README.md
