@@ -65,15 +65,21 @@ Build APK
 
 ```bash
 apkvolt build . \
-  --app-name "APKVolt App" \
-  --app-package mypack.package.app \
-  --app-version-name 0.1 \
-  --app-version-code 1 \
+  --sign \
+  --ks mykeystore.keystore \
+  --ks-alias alias \
+  --app-name "My App" \
   --min-sdk-version 21 \
   --target-sdk-version 34 \
+  --app-version-code 1 \
+  --app-version-name 0.1 \
+  --app-package mypack.package.package \
   --icon icon.png \
-  --splash splash.png \
-  --output app.apk
+  --icon-bg icon-bg.png \
+  --icon-fg icon-fg.png \
+  --splash splash.jpg \
+  --output myapp.apk \
+  --log-level info
 ```
 
 Align APK
@@ -106,7 +112,12 @@ Python Usage
 from apkvolt import build, apkforge, zipalign
 
 build(
-    path=".",
+    "/path/myproject",
+    keystore_path="mykeystore.keystore",
+    key_alias="myalias",
+    keystore_pass="mykeystore_pass",
+    key_pass="mykey_pass",
+    apk_sign=True,
     app_name="APKVolt App",
     package="mypack.package.app",
     version_name="0.1",
@@ -114,13 +125,15 @@ build(
     min_sdk_version=21,
     target_sdk_version=34,
     icon="icon.png",
-    splash="splash.png",
+    icon_background="icon_bg.png",
+    icon_foreground="icon_fg.png",
+    presplash="splash.png",
     output="app.apk"
 )
 
 zipalign.align(
     "app.apk",
-    output="app_aligned.apk",
+    "app_aligned.apk",
     alignment=4,
     so_alignment=4096
 )
