@@ -19,6 +19,12 @@ def main():
 	)
 	parser = argparse.ArgumentParser(description="PVCompiler: Compile Python scripts into APKs")
 	
+	parser.add_argument(
+		"--version",
+		action="version",
+		version="apkvolt 1.0.4"
+	)
+	
 	# Cria subcomandos
 	subparsers = parser.add_subparsers(dest="command", required=True)
 	

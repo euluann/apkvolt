@@ -6,5 +6,5 @@ from .compile import build, cache_to_apk, cache_to_tar, SUPPORTED_LIBS
 from . import apkforge
 from .exceptions import *
 
-__version__ = "1.0.2"
+__version__ = "1.0.4"
 
